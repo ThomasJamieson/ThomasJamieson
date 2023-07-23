@@ -37,32 +37,76 @@ function HomeBody() {
   )
 }
 
-function ProjectsBody() {
+
+function ProjectsBody({showAllCells}) {
+  const[selected, setSelected] = useState(-1);
+  const [cellVisibility, setCellVisibility] = useState(Array(9).fill(true));
+  
+  const handleCellClick = (cellId) => {
+    if (cellId == selected) {
+      setSelected(-1);
+    }
+    else {
+      setSelected(cellId);
+    }
+  };
+
+  var cellData = [0,1,2,3,4,5,6,7,8,19];
+  var visibleCells;
+  if (selected == -1) {
+    visibleCells = [<ProjectCell cellId={cellData[0]} onItemClick={handleCellClick}/>,<ProjectCell cellId={cellData[1]} onItemClick={handleCellClick}/>,
+                    <ProjectCell cellId={cellData[2]} onItemClick={handleCellClick}/>,<ProjectCell cellId={cellData[3]} onItemClick={handleCellClick}/>,
+                    <ProjectCell cellId={cellData[4]} onItemClick={handleCellClick}/>,<ProjectCell cellId={cellData[5]} onItemClick={handleCellClick}/>,
+                    <ProjectCell cellId={cellData[6]} onItemClick={handleCellClick}/>,<ProjectCell cellId={cellData[7]} onItemClick={handleCellClick}/>,
+                    <ProjectCell cellId={cellData[8]} onItemClick={handleCellClick}/>];
+  }
+  else {
+    visibleCells = <ProjectCell cellId={cellData[selected]} description={"Description for project blah blah blah"} onItemClick={handleCellClick}/>;
+  }
+
+  if (selected == -1) {
+    return (
+      <ProjectGrid visibleCells={visibleCells} />
+    )
+  }
+  else {
+    return (
+      <ProjectSingle visibleCells={visibleCells} />
+    )
+  }
+}
+
+function ProjectGrid({visibleCells}) {
   return (
-    <div className='page-body'>
-      <p>
-        Projects text
-      </p>
+    <div className='page-body project-div-grid'>
+      {visibleCells}
     </div>
   )
 }
 
-function ProjectCell({num}) {
+function ProjectSingle({visibleCells}) {
   return (
-    <div className='project-div'>
-      <div className="project-title">
-        <p>Project {num}</p>
-      </div>
-      <div className='project-description'>
-        <p>Project description</p>
-      </div>
+    <div className='page-body'>
+      {visibleCells}
+    </div>
+  )
+}
+
+function ProjectCell({cellId, description, onItemClick}) {
+  const [text, setText] = useState(cellId+1);
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div className='project-cell' onClick={() => onItemClick(cellId)}>
+      <p>Project {text}</p>
+      <p>{description}</p>
     </div>
   )
 }
 
 function App() {
   const [activeItem, setActiveItem] = useState('home');
-  const handleItemClick = (item) => {
+  const handleNavClick = (item) => {
     setActiveItem(item);
   };
 
@@ -71,8 +115,8 @@ function App() {
     case 'home':
       content = <HomeBody />;
       break;
-    case 'projects':
-      content = <ProjectsBody />;
+    case 'projects':;
+      content = <ProjectsBody showAllCells={false}/>;
       break;
     default:
       content = <HomeBody />;
@@ -83,7 +127,7 @@ function App() {
     <div className='App'>
       <div className='blank-div'></div>
       <AppHeader />
-      <NavBar onItemClick={handleItemClick}/>
+      <NavBar onItemClick={handleNavClick}/>
       {content}
     </div>
   );

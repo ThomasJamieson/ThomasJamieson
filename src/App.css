@@ -12,19 +12,17 @@
   color: rgb(165, 160, 160);
 }
 
-.project-div {
-  display: flex;
-  flex-direction: row;
-  padding: 0 2%;
-  vertical-align: top;
-  background: rgb(255,255,0);
-  background: linear-gradient(90deg, rgba(255,255,0,1) 0%, rgba(255,0,0,1) 50%, rgba(255,255,0,1) 100%);
-  justify-content: space-between;
+.project-div-grid {
+  display: grid;
+  grid-template-columns: 0.33fr 0.33fr 0.33fr;
+  gap: 10px 10px;
+  padding-bottom: 1%;
 }
 
-.project-title {
-  background-color: transparent;
-  width: 25%;
+.project-cell {
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
 }
 
 .page-body {
@@ -80,6 +78,10 @@
 }
 
 @media screen and (max-width: 500px) {
+  .app-header {
+    padding-left: 2%;
+  }
+  
   .nav-bar {
     background-color: #f5f5f5;
     grid-area: nav-bar;
@@ -93,6 +95,10 @@
     padding-right: 20%;
     color: black;
     transition: 0.3s;
+  }
+
+  .page-body { 
+    padding-left: 2%;
   }
   
   .App {
